@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (lint, typecheck, tests, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      mongo:
+        image: mongo:7
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      TEST_MONGODB_URI: mongodb://127.0.0.1:27017/skillsprint_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  mobile:
+    name: Mobile (lint, typecheck, tests, Android bundle)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - run: npx eslint .
+      - run: npx tsc --noEmit
+      - run: npx jest --ci
+      - name: Bundle JavaScript for Android (catches Metro/compile errors)
+        run: npx expo export --platform android --output-dir dist-android
+        env:
+          EXPO_PUBLIC_API_URL: https://skillsprint-api.onrender.com/api/v1

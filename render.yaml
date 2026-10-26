@@ -1,0 +1,36 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Secrets marked `sync: false` are entered in the Render dashboard, never committed.
+services:
+  - type: web
+    name: skillsprint-api
+    runtime: node
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci --include=dev && npm run build && npm prune --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-flash-latest
+      - key: AI_PROVIDER
+        value: gemini
+      - key: CORS_ORIGINS
+        value: ""
+      - key: TRUST_PROXY
+        value: 1
+      - key: AI_DAILY_REQUEST_LIMIT
+        value: 60
+      - key: AI_PER_MINUTE_LIMIT
+        value: 10

@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "SkillSprint AI",
+    "slug": "skillsprint-ai",
+    "scheme": "skillsprint",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "description": "Learn smarter. Practice daily. Level up.",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ai.skillsprint.app"
+    },
+    "android": {
+      "package": "ai.skillsprint.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#D4F53C",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "VIBRATE"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-secure-store",
+      "expo-audio",
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#F6F7FB",
+          "dark": {
+            "image": "./assets/splash-icon.png",
+            "backgroundColor": "#12152B"
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/android-icon-monochrome.png",
+          "color": "#3B5BFD"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {}
+    }
+  }
+}
