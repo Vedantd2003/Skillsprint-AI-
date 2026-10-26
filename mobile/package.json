@@ -62,7 +62,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "test": "jest",
-    "export:android": "expo export --platform android"
+    "export:android": "expo export --platform android",
+    "build:web": "expo export --platform web && node scripts/web-routes.js"
   },
   "private": true,
   "jest": {
